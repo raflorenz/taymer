@@ -5,21 +5,18 @@ const initialTasks = [
   {
     id: 1,
     title: 'add new feature',
-    start: 0,
     time: 0,
     active: false
   },
   {
     id: 2,
     title: 'fix some bugs',
-    start: 0,
     time: 0,
     active: false
   },
   {
     id: 3,
     title: 'make some coffee',
-    start: 0,
     time: 0,
     active: false
   }
@@ -27,44 +24,33 @@ const initialTasks = [
 
 function App() {
   const [tasks, setTasks] = useState(initialTasks);
-  const [currentTask, setCurrentTask] = useState({});
+  const [activeTask, setActiveTask] = useState(null);
 
-  const pad = val => val > 9 ? val : '0' + val;
+  const timePad = val => val > 9 ? val : '0' + val;
 
   useEffect(() => {
     let interval = null;
 
-    console.log(currentTask[0]);
+    if (activeTask) {
+      const updateTaskTime = () => {
+        setTasks(tasks => tasks.map(task => {
+          if (task.id === activeTask.id) {
+            return {
+              ...task,
+              active: true,
+              time: task.time + 1
+            };
+          }
 
-    if (currentTask[0]) {
-      interval = setInterval(() => setTasks(tasks.map(task => {
-        if (task.id === currentTask[0].id) {
-          return {
-            ...task,
-            active: true,
-            time: task.time + 1
-          };
-        }
-        return task;
-      })), 1000);
+          return task;
+        }));
+      };
+
+      interval = setInterval(updateTaskTime, 1000);
     }
 
     return () => clearInterval(interval);
-  }, [tasks, currentTask]);
-
-  const startTimer = (taskID) => {
-    console.log('start timer button clicked...');
-
-    setCurrentTask(tasks.map(task => {
-      if (task.id === taskID) {
-        return {
-          ...task,
-          active: true
-        };
-      }
-      return task;
-    }).filter(task => task.id === taskID));
-  };  
+  }, [activeTask]);
 
   return (
     <div className="app">
@@ -72,8 +58,8 @@ function App() {
       <div className="task-list">
         {tasks.map(task => (
           <div key={task.id} className="task-item">
-            <p className="task-title">{task.title} <span>{pad(Math.floor(task.time / 60 % 60))}m:{pad(task.time % 60)}s</span></p>
-            <button onClick={() => startTimer(task.id)}>start</button>
+            <p className="task-title">{task.title} <span>{timePad(Math.floor(task.time / 60 % 60))}m:{timePad(task.time % 60)}s</span></p>
+            <button onClick={() => setActiveTask(tasks.find(item => item.id === task.id))}>start</button>
           </div>
         ))}
       </div>
