@@ -20,6 +20,7 @@ body {
 
 .task-item {
   display: flex;
+  margin-bottom: 20px;
 }
 
 .task-title {
