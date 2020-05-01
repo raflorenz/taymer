@@ -1,2 +1,2 @@
 # Taymer
-Tasks timer for personal use, hahaha
+Simple time tracking app using React
