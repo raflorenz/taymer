@@ -1,32 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
-const initialTasks = [
-  {
-    id: 1,
-    title: 'add new feature',
-    time: 0,
-    active: false
-  },
-  {
-    id: 2,
-    title: 'fix some bugs',
-    time: 0,
-    active: false
-  },
-  {
-    id: 3,
-    title: 'make some coffee',
-    time: 0,
-    active: false
-  }
-];
-
 function App() {
-  const [tasks, setTasks] = useState(initialTasks);
+  const [tasks, setTasks] = useState([]);
   const [activeTask, setActiveTask] = useState(null);
-
-  const timePad = val => val > 9 ? val : '0' + val;
+  const [input, setInput] = useState('');
 
   useEffect(() => {
     let interval = null;
@@ -52,14 +30,51 @@ function App() {
     return () => clearInterval(interval);
   }, [activeTask]);
 
+  const timePad = val => val > 9 ? val : '0' + val;
+
+  const addTask = e => {
+    e.preventDefault();
+
+    if (input) {
+      setTasks([
+        ...tasks,
+        {
+          id: Date.now(),
+          title: input,
+          time: 0,
+          active: false
+        }
+      ]);
+    }
+
+    setInput('');
+  };
+
+  const deleteTask = taskID => {
+    setTasks(tasks.filter(task => task.id !== taskID));
+  };
+
   return (
     <div className="app">
       <h1>Taymer</h1>
+
+      <form onSubmit={addTask}>
+        <input 
+          type="text" 
+          value={input} 
+          autoFocus 
+          required 
+          onChange={e => setInput(e.target.value)} 
+        />
+        <button>Add task</button>
+      </form>
+
       <div className="task-list">
         {tasks.map(task => (
           <div key={task.id} className="task-item">
-            <p className="task-title">{task.title} <span>{timePad(Math.floor(task.time / 60 % 60))}m:{timePad(task.time % 60)}s</span></p>
-            <button onClick={() => setActiveTask(tasks.find(item => item.id === task.id))}>start</button>
+            <button className="btn-delete" onClick={() => deleteTask(task.id)}>x</button>
+            <p className="task-title">{task.title} - <span>{timePad(Math.floor(task.time / 60 % 60))}m:{timePad(task.time % 60)}s</span></p>
+            <button onClick={() => setActiveTask(tasks.find(item => item.id === task.id))}>Start</button>
           </div>
         ))}
       </div>

@@ -7,6 +7,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+button {
+  font-weight: bold;
+  cursor: pointer;
+}
+
 .app {
   display: flex;
   flex-direction: column;
@@ -18,15 +23,22 @@ body {
   color: #fff;
 }
 
+form {
+  display: flex;
+  margin-bottom: 1.8em;
+}
+
+form input {
+  padding: 10px;
+  font-size: 16px;
+}
+
 .task-item {
   display: flex;
   margin-bottom: 20px;
+  justify-content: space-between;
 }
 
 .task-title {
-  margin: 0;
-}
-
-button {
   margin: 0 20px;
 }
