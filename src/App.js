@@ -51,7 +51,9 @@ function App() {
   };
 
   const deleteTask = taskID => {
-    setTasks(tasks.filter(task => task.id !== taskID));
+    if (window.confirm('Are you sure you want to delete this item?')) {
+      setTasks(tasks.filter(task => task.id !== taskID));
+    }
   };
 
   return (
