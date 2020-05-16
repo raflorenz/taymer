@@ -1,2 +1,2 @@
 # Taymer
-Simple time tracking app using React
+Simple time tracking app built using React
