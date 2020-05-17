@@ -75,7 +75,7 @@ function App() {
         {tasks.map(task => (
           <div key={task.id} className="task-item">
             <button className="btn-delete" onClick={() => deleteTask(task.id)}>x</button>
-            <p className="task-title">{task.title} - <span>{timePad(Math.floor(task.time / 60 % 60))}m:{timePad(task.time % 60)}s</span></p>
+            <p className="task-title">{task.title} – <span>{timePad(Math.floor(task.time / 3600 % 60))}h:{timePad(Math.floor(task.time / 60 % 60))}m:{timePad(task.time % 60)}s</span></p>
             <button onClick={() => setActiveTask(tasks.find(item => item.id === task.id))}>Start</button>
           </div>
         ))}
